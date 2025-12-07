@@ -1,3 +1,8 @@
+'''
+TherapiBot: The Cognitive Counter-Speaker
+
+This is the main application file for TherapiBot.
+'''
 
 import os
 import requests
@@ -8,10 +13,9 @@ from dotenv import load_dotenv
 # --- Configuration ---
 load_dotenv()
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
-RAINDROP_API_KEY = os.getenv("RAINDROP_API_KEY") # Placeholder for actual Raindrop API key
-RAINDROP_API_URL = "https://api.raindrop.io/v1"  # Placeholder for actual Raindrop API endpoint
+RAINDROP_API_KEY = os.getenv("RAINDROP_API_KEY") # Placeholder
+RAINDROP_API_URL = "https://api.raindrop.io/v1"  # Placeholder
 
-# Set the ElevenLabs API key
 if ELEVENLABS_API_KEY:
     set_api_key(ELEVENLABS_API_KEY)
 else:
@@ -20,81 +24,105 @@ else:
 # --- Mock Raindrop API Interaction ---
 
 def get_cognitive_restructuring_mock(text):
-    """
-    Mocks the interaction with the Raindrop platform.
+    "Mocks the interaction with the Raindrop platform."
+    print(f"\n[Simulating Raindrop MCP]...")
+    print(f"[Analyst Agent] Identifying cognitive distortion in: \033[3m'{text}'\033[0m")
 
-    In a real implementation, this function would make an HTTP request to the
-    Raindrop MCP, which would orchestrate multiple agents (Analyst, Empath, Pacer)
-    to generate a nuanced response.
-
-    For this hackathon prototype, we simulate this process.
-    """
-    print("\n[Simulating Raindrop MCP]...")
-    print(f"[Analyst Agent] Identifying cognitive distortion in: [3m'{text}'[0m")
-    
-    # Simulate identifying a cognitive distortion
+    # Expanded dictionary of cognitive distortions and keywords
     distortions = {
-        "i'm not good enough": "Emotional Reasoning",
-        "i always mess up": "Overgeneralization",
-        "i'll never succeed": "Catastrophizing",
-        "this is all my fault": "Personalization"
+        "Emotional Reasoning": ["i feel like", "i feel that", "i'm not good enough"],
+        "Overgeneralization": ["always", "never", "every time", "everyone"],
+        "Catastrophizing": ["it's going to be a disaster", "what if i fail", "i'll never succeed"],
+        "Personalization": ["it's all my fault", "this is because of me"],
+        "Mind Reading": ["they probably think", "i know she thinks", "he must think i'm"],
+        "Fortune Telling": ["i know i'll mess up", "it's going to be terrible", "i'm going to fail"],
+        "Labeling": ["i'm a loser", "i'm a failure", "i'm an idiot"],
+        "Should Statements": ["i should have", "i must not", "i ought to"]
     }
-    
+
     identified_distortion = "Unknown"
-    for phrase, distortion in distortions.items():
-        if phrase in text.lower():
+    for distortion, keywords in distortions.items():
+        if any(keyword in text.lower() for keyword in keywords):
             identified_distortion = distortion
             break
-    
-    print(f"[Analyst Agent] -> Identified: {identified_distortion}")
-    print("[Empath Agent] -> Detected tone: Discouraged")
-    print("[Pacer Agent] -> Setting pace: Calm and Reassuring")
 
-    # Simulate generating a response based on the agents' outputs
+    print(f"[Analyst Agent] -> Identified: {identified_distortion}")
+    print("[Empath Agent] -> Detected tone: Discouraged, anxious")
+    print("[Pacer Agent] -> Setting pace: Calm, thoughtful, and reassuring")
+
+    # Expanded and more nuanced responses
     responses = {
-        "Emotional Reasoning": "Feeling something strongly doesn't make it true. Let's separate the feeling from the facts. What evidence do you have that you aren't 'good enough'?",
-        "Overgeneralization": "You're using very strong words like 'always'. Can you think of a time when you didn't mess up? I bet you can. One mistake doesn't define your entire track record.",
-        "Catastrophizing": "It sounds like you're jumping to the worst-case scenario. What's a more realistic outcome? Let's walk back from the edge a little.",
-        "Personalization": "Are you taking responsibility for something that wasn't entirely in your control? Let's look at the bigger picture and see what other factors were at play.",
-        "Unknown": "That's a heavy thought. Let's try to break it down. What makes you say that?"
+        "Emotional Reasoning": [
+            "Ah, the old 'if I feel it, it must be true' trap. Feelings are like the weather, constantly changing, but they aren't facts. Let's look for some solid evidence outside of that feeling.",
+            "That's a powerful feeling, but let's not let it write the whole story. What would a neutral observer say about the situation?"
+        ],
+        "Overgeneralization": [
+            "'Always' and 'never' are very strong words, don't you think? It sounds like you're painting with a very broad brush. Can you recall even one exception? That one exception proves it's not 'always'.",
+            "You're generalizing from one or two events to your entire life. That's like judging a whole movie by one bad scene. Let's zoom out a bit."
+        ],
+        "Catastrophizing": [
+            "Okay, you're jumping to the worst-possible-disaster-scenario. Let's dial it back. What's a more likely, less dramatic outcome? And even if the worst happened, would you be able to handle it? I bet you would.",
+            "You've activated the mental disaster movie projector. Let's turn it off. What's one small, positive step you could take right now, instead of worrying about a future that hasn't happened?"
+        ],
+        "Personalization": [
+            "It sounds like you're carrying the weight of the world on your shoulders. Are you sure this is 100% your fault? Let's look at the other factors at play here.",
+            "You're blaming yourself for something that you likely didn't have complete control over. Let's be fair to yourself. What part of this did you *not* control?"
+        ],
+        "Mind Reading": [
+            "You seem to have developed a superpower: mind reading! But are you sure you're getting an accurate reading? The only way to truly know what someone is thinking is to ask them. Everything else is just a story you're telling yourself.",
+            "Unless you're secretly a telepath, you can't know for sure what's going on in someone else's head. Let's focus on your actions and intentions, which you *can* control."
+        ],
+        "Fortune Telling": [
+            "So you've got a crystal ball now? Predicting a negative future doesn't make it true. It just makes you anxious right now. What if you predicted a positive outcome instead?",
+            "You're acting as if the future is already written, and it's a tragedy. The future is unwritten. Let's focus on what you can do in the present to make a good outcome more likely."
+        ],
+        "Labeling": [
+            "You are not a label. You are a complex person who sometimes makes mistakes. Slapping a negative label on yourself is unfair and inaccurate. Let's describe the action, not the person.",
+            "Calling yourself 'a loser' or 'a failure' is a harsh judgment. You are a person who may have failed at something, but that doesn't make your entire being a failure. Let's be more specific and less dramatic."
+        ],
+        "Should Statements": [
+            "'Should' is a tricky word. It often creates a lot of guilt and pressure. What if you replaced 'I should have' with 'I would have preferred to'? It feels a lot different, doesn't it?",
+            "You're holding yourself to a rigid set of rules. Says who? Let's challenge that rule. Is it really true that you 'must not' do that, or is that just a high expectation you've set for yourself?"
+        ],
+        "Unknown": [
+            "That's a heavy thought. Let's try to break it down. What makes you say that?",
+            "I hear that. It sounds like you're going through a lot right now. Can you tell me more about what's leading you to that conclusion?"
+        ]
     }
 
-    response_text = responses.get(identified_distortion, responses["Unknown"])
-    print(f"[Raindrop MCP] -> Generated Response: [3m'{response_text}'[0m")
+    response_options = responses.get(identified_distortion, responses["Unknown"])
+    response_text = random.choice(response_options)
+    print(f"[Raindrop MCP] -> Generated Response: \033[3m'{response_text}'\033[0m")
     return response_text
 
 # --- Main Application Logic ---
 
 def main():
-    """
-    The main function of the application.
-    """
-    print("\n[1m[36m--- Welcome to TherapiBot ---[0m")
+    "The main function of the application."
+    print("\n\033[1m\033[36m--- Welcome to TherapiBot ---\033[0m")
     print("Your cognitive counter-speaker. Ready when you are.")
     print("(Type 'exit' or 'quit' to end the session)\n")
 
     while True:
         try:
-            user_input = input("[1mYou:[0m ")
+            user_input = input("\033[1mYou:\033[0m ")
             if user_input.lower() in ["exit", "quit"]:
-                print("\n[36mTherapiBot:[0m Goodbye! Remember to be kind to yourself.")
+                print("\n\033[36mTherapiBot:\033[0m Goodbye! Remember to be kind to yourself.")
                 break
             
             if not user_input.strip():
                 continue
 
-            # Get the cognitive restructuring from the (mocked) Raindrop platform
             response_text = get_cognitive_restructuring_mock(user_input)
             
-            print(f"\n[36mTherapiBot:[0m {response_text}")
+            print(f"\n\033[36mTherapiBot:\033[0m {response_text}")
             
-            # Generate and play the audio response using ElevenLabs
             if ELEVENLABS_API_KEY:
                 try:
                     print("\n[Generating voice with ElevenLabs]...")
                     audio = generate(
                         text=response_text,
-                        voice="Bella",  # A friendly and empathetic voice
+                        voice="Bella",
                         model="eleven_multilingual_v2"
                     )
                     play(audio)
@@ -106,7 +134,7 @@ def main():
                 print("\n[Skipping voice generation. Set ELEVENLABS_API_KEY to enable.]")
 
         except (KeyboardInterrupt, EOFError):
-            print("\n\n[36mTherapiBot:[0m Goodbye! Remember to be kind to yourself.")
+            print("\n\n\033[36mTherapiBot:\033[0m Goodbye! Remember to be kind to yourself.")
             break
 
 if __name__ == "__main__":
